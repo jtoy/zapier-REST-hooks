@@ -2,6 +2,8 @@ require_dependency 'zapier_rest_hooks/application_controller'
 
 module ZapierRestHooks
   class HooksController < ApplicationController
+    skip_before_action :verify_authenticity_token
+    
     def create
       hook = Hook.new(hook_params)
       render nothing: true, status: 500 && return unless hook.save
@@ -23,7 +25,7 @@ module ZapierRestHooks
     private
 
     def hook_params
-      params[:event_name] ||= params[:name]
+      params[:event_name] ||= params[:event]
       params[:hook] = params
       params.require(:hook).permit(:event_name, :target_url, :owner_id, :owner_class_name, :subscription_url)
     end
