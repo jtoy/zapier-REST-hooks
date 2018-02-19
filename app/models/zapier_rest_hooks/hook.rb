@@ -2,6 +2,7 @@ require 'rest-client'
 module ZapierRestHooks
   Struct.new('ZapierApp', :id)
   class Hook < ActiveRecord::Base
+    belongs_to :owner, polymorphic: true, optional: true
     validates :event_name, :target_url, presence: true
 
     # Looks for an appropriate REST hook that matches the owner, and triggers the hook if one exists.
