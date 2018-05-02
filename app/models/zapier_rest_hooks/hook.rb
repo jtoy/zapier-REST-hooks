@@ -34,5 +34,11 @@ module ZapierRestHooks
     def self.hooks_exist?(event_name, owner = Struct::ZapierApp.new(0))
       hooks(event_name, owner).any?
     end
+
+    def trigger(encoded_record)
+      RestClient.post(target_url, encoded_record) do |response|
+        destroy if response.code.eql? 410
+      end
+    end
   end
 end
