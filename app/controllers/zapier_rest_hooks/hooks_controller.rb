@@ -10,6 +10,7 @@ module ZapierRestHooks
       puts "PPP"
       res = hook.save
       puts "RES #{res.inspect}"
+      puts "errors #{hook.errors.inspect}"
       render nothing: true, status: 500 && return unless res
       puts "KKK"
       Rails.logger.info "Created REST hook: #{hook.inspect}"
