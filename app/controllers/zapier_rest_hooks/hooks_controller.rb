@@ -8,7 +8,9 @@ module ZapierRestHooks
       puts "FFF"
       hook = Hook.new(hook_params)
       puts "PPP"
-      render nothing: true, status: 500 && return unless hook.save
+      res = hook.save
+      puts "RES #{res.inspect}"
+      render nothing: true, status: 500 && return unless res
       puts "KKK"
       Rails.logger.info "Created REST hook: #{hook.inspect}"
       # The Zapier documentation says to return 201 - Created.
