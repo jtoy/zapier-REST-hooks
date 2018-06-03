@@ -5,17 +5,19 @@ module ZapierRestHooks
     skip_before_action :verify_authenticity_token
     
     def create
-      puts "FFF"
       hook = Hook.new(hook_params)
-      puts "PPP"
+      if params[:api_key]
+        org = Organization.where(api_key:params[:api_key]).first
+        if org
+          hook.owner_id = org.id
+          hook.owner_class_name = org.class.name
+        end
+      end
       res = hook.save
-      puts "RES #{res.inspect}"
       puts "errors #{hook.errors.inspect}"
       render nothing: true, status: 500 && return unless res
-      puts "KKK"
       Rails.logger.info "Created REST hook: #{hook.inspect}"
       # The Zapier documentation says to return 201 - Created.
-      puts "RRRR"
       render json: hook.to_json(only: :id), status: 201
     end
 
