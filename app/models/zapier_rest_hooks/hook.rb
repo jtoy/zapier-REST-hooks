@@ -10,7 +10,7 @@ module ZapierRestHooks
       hooks = self.hooks(event_name, owner)
       return if hooks.empty?
 
-      unless Rails.env.development?
+      #unless Rails.env.development?
         # Trigger each hook if there is more than one for an owner, which can happen.
         hooks.each do |hook|
           Rails.logger.info "Triggering REST hook event: #{event_name} / #{hook.inspect}"
@@ -22,7 +22,7 @@ module ZapierRestHooks
             end
           end
         end
-      end
+      #end
     end
 
     # Returns all hooks for a given event_name and owner.
